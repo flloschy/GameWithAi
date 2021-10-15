@@ -9,9 +9,16 @@ class Board:
         self.line2 = []
         self.line3 = []
         self.line4 = []
+        self.line5 = []
 
     def Create(self):
         possibleNumbers = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+        possibleColors = [
+            {'pos': 0, 'hex': Colors.red(), 'left': 3},
+            {'pos': 1, 'hex': Colors.yellow(), 'left': 3},
+            {'pos': 2, 'hex': Colors.green(), 'left': 3},
+            {'pos': 3, 'hex': Colors.blue(), 'left': 2}
+        ]
         for n in range(0, 11):
             if self.randomNum:
                 while True:
@@ -19,49 +26,42 @@ class Board:
                     if num in possibleNumbers:
                         possibleNumbers.remove(num)
                         if self.randomCol:
-                            possibleColors = [
-                                {'pos': 0,'hex': Colors.red(), 'left': 3},
-                                {'pos': 1, 'hex': Colors.yellow(), 'left': 3},
-                                {'pos': 2, 'hex': Colors.green(), 'left': 3},
-                                {'pos': 3, 'hex': Colors.red(), 'left': 2}
-                                ]
                             while True:
                                 Col = random.choice(possibleColors)
                                 if Col['left'] != 0:
                                     possibleColors[Col['pos']]['left'] -= 1
-                                    self.line1.append({'num': num, 'color': 'red', 'hex': Col['hex']})
+                                    self.line1.append({'num': num, 'color': 'red', 'hex': Col['hex'], 'ticked': False, 'blocked': False})
                                     break
                                 else:
-                                    possibleColors.remove(Col)
+                                    
                                     continue
                                 
                             break
                         else:
-                            self.line1.append({'num': num, 'color': 'red', 'hex': Colors.red()})
+                            self.line1.append({'num': num, 'color': 'red', 'hex': Colors.red(), 'ticked': False, 'blocked': False})
                             break
             else:
                 if self.randomCol:
-                    possibleColors = [
-                        {'hex': Colors.red(), 'left': 3},
-                        {'hex': Colors.yellow(), 'left': 3},
-                        {'hex': Colors.green(), 'left': 3},
-                        {'hex': Colors.red(), 'left': 2}
-                        ]
                     while True:
                         Col = random.choice(possibleColors)
                         if Col['left'] != 0:
                             Col['left'] -= 1
-                            self.line1.append({'num': n, 'color': 'red', 'hex': Col['hex']})
+                            self.line1.append({'num': n+2, 'color': 'red', 'hex': Col['hex'], 'ticked': False, 'blocked': False})
                             break
                         else:
-                            possibleColors.remove(Col)
+                            
                             continue
                         
                 else:
-                    self.line1.append({'num': n, 'color': 'red', 'hex': Colors.red()})
-                    break
+                    self.line1.append({'num': n+2, 'color': 'red', 'hex': Colors.red(), 'ticked': False, 'blocked': False})
 
         possibleNumbers = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+        possibleColors = [
+            {'pos': 0, 'hex': Colors.red(), 'left': 3},
+            {'pos': 1, 'hex': Colors.yellow(), 'left': 3},
+            {'pos': 2, 'hex': Colors.green(), 'left': 2},
+            {'pos': 3, 'hex': Colors.blue(), 'left': 3}
+        ]
         for n in range(0, 11):
             if self.randomNum:
                 while True:
@@ -69,49 +69,42 @@ class Board:
                     if num in possibleNumbers:
                         possibleNumbers.remove(num)
                         if self.randomCol:
-                            possibleColors = [
-                                {'hex': Colors.red(), 'left': 3},
-                                {'hex': Colors.yellow(), 'left': 3},
-                                {'hex': Colors.green(), 'left': 3},
-                                {'hex': Colors.red(), 'left': 2}
-                                ]
                             while True:
                                 Col = random.choice(possibleColors)
                                 if Col['left'] != 0:
                                     Col['left'] -= 1
-                                    self.line2.append({'num': num, 'color': 'red', 'hex': Col['hex']})
+                                    self.line2.append({'num': num, 'color': 'red', 'hex': Col['hex'], 'ticked': False, 'blocked': False})
                                     break
                                 else:
-                                    possibleColors.remove(Col)
+                                    
                                     continue
                                 
                             break
                         else:
-                            self.line2.append({'num': num, 'color': 'red', 'hex': Colors.yellow()})
+                            self.line2.append({'num': num, 'color': 'red', 'hex': Colors.yellow(), 'ticked': False, 'blocked': False})
                             break
             else:
                 if self.randomCol:
-                    possibleColors = [
-                        {'hex': Colors.red(), 'left': 3},
-                        {'hex': Colors.yellow(), 'left': 3},
-                        {'hex': Colors.green(), 'left': 3},
-                        {'hex': Colors.red(), 'left': 2}
-                        ]
                     while True:
                         Col = random.choice(possibleColors)
                         if Col['left'] != 0:
                             Col['left'] -= 1
-                            self.line2.append({'num': n, 'color': 'red', 'hex': Col['hex']})
+                            self.line2.append({'num': n+2, 'color': 'red', 'hex': Col['hex'], 'ticked': False, 'blocked': False})
                             break
                         else:
-                            possibleColors.remove(Col)
+                            
                             continue
                         
                 else:
-                    self.line2.append({'num': n, 'color': 'red', 'hex': Colors.yellow()})
-                    break
+                    self.line2.append({'num': n+2, 'color': 'red', 'hex': Colors.yellow(), 'ticked': False, 'blocked': False})
 
         possibleNumbers = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+        possibleColors = [
+            {'pos': 0, 'hex': Colors.red(), 'left': 3},
+            {'pos': 1, 'hex': Colors.yellow(), 'left': 2},
+            {'pos': 2, 'hex': Colors.green(), 'left': 3},
+            {'pos': 3, 'hex': Colors.blue(), 'left': 3}
+        ]
         for n in range(0, 11):
             if self.randomNum:
                 while True:
@@ -119,49 +112,42 @@ class Board:
                     if num in possibleNumbers:
                         possibleNumbers.remove(num)
                         if self.randomCol:
-                            possibleColors = [
-                                {'hex': Colors.red(), 'left': 3},
-                                {'hex': Colors.yellow(), 'left': 3},
-                                {'hex': Colors.green(), 'left': 3},
-                                {'hex': Colors.red(), 'left': 2}
-                                ]
                             while True:
                                 Col = random.choice(possibleColors)
                                 if Col['left'] != 0:
                                     Col['left'] -= 1
-                                    self.line3.append({'num': num, 'color': 'red', 'hex': Col['hex']})
+                                    self.line3.append({'num': num, 'color': 'red', 'hex': Col['hex'], 'ticked': False, 'blocked': False})
                                     break
                                 else:
-                                    possibleColors.remove(Col)
+                                    
                                     continue
                                 
                             break
                         else:
-                            self.line3.append({'num': num, 'color': 'red', 'hex': Colors.green()})
+                            self.line3.append({'num': num, 'color': 'red', 'hex': Colors.green(), 'ticked': False, 'blocked': False})
                             break
             else:
                 if self.randomCol:
-                    possibleColors = [
-                        {'hex': Colors.red(), 'left': 3},
-                        {'hex': Colors.yellow(), 'left': 3},
-                        {'hex': Colors.green(), 'left': 3},
-                        {'hex': Colors.red(), 'left': 2}
-                        ]
                     while True:
                         Col = random.choice(possibleColors)
                         if Col['left'] != 0:
                             Col['left'] -= 1
-                            self.line3.append({'num': n, 'color': 'red', 'hex': Col['hex']})
+                            self.line3.append({'num': n+2, 'color': 'red', 'hex': Col['hex'], 'ticked': False, 'blocked': False})
                             break
                         else:
-                            possibleColors.remove(Col)
+                            
                             continue
                         
                 else:
-                    self.line3.append({'num': n, 'color': 'red', 'hex': Colors.green()})
-                    break
+                    self.line3.append({'num': n+2, 'color': 'red', 'hex': Colors.green(), 'ticked': False, 'blocked': False})
 
         possibleNumbers = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+        possibleColors = [
+            {'pos': 0, 'hex': Colors.red(), 'left': 2},
+            {'pos': 1, 'hex': Colors.yellow(), 'left': 3},
+            {'pos': 2, 'hex': Colors.green(), 'left': 3},
+            {'pos': 3, 'hex': Colors.blue(), 'left': 3}
+        ]
         for n in range(0, 11):
             if self.randomNum:
                 while True:
@@ -169,46 +155,53 @@ class Board:
                     if num in possibleNumbers:
                         possibleNumbers.remove(num)
                         if self.randomCol:
-                            possibleColors = [
-                                {'hex': Colors.red(), 'left': 3},
-                                {'hex': Colors.yellow(), 'left': 3},
-                                {'hex': Colors.green(), 'left': 3},
-                                {'hex': Colors.red(), 'left': 2}
-                                ]
                             while True:
                                 Col = random.choice(possibleColors)
                                 if Col['left'] != 0:
                                     Col['left'] -= 1
-                                    self.line4.append({'num': num, 'color': 'red', 'hex': Col['hex']})
+                                    self.line4.append({'num': num, 'color': 'red', 'hex': Col['hex'], 'ticked': False, 'blocked': False})
                                     break
                                 else:
-                                    possibleColors.remove(Col)
+                                    
                                     continue
                                 
                             break
                         else:
-                            self.line4.append({'num': num, 'color': 'red', 'hex': Colors.blue()})
+                            self.line4.append({'num': num, 'color': 'red', 'hex': Colors.blue(), 'ticked': False, 'blocked': False})
                             break
             else:
                 if self.randomCol:
-                    possibleColors = [
-                        {'hex': Colors.red(), 'left': 3},
-                        {'hex': Colors.yellow(), 'left': 3},
-                        {'hex': Colors.green(), 'left': 3},
-                        {'hex': Colors.red(), 'left': 2}
-                        ]
                     while True:
                         Col = random.choice(possibleColors)
                         if Col['left'] != 0:
                             Col['left'] -= 1
-                            self.line4.append({'num': n, 'color': 'red', 'hex': Col['hex']})
+                            self.line4.append({'num': n+2, 'color': 'red', 'hex': Col['hex'], 'ticked': False, 'blocked': False})
                             break
                         else:
-                            possibleColors.remove(Col)
+                            
                             continue
                         
                 else:
-                    self.line4.append({'num': n, 'color': 'red', 'hex': Colors.blue()})
-                    break
+                    self.line4.append({'num': n+2, 'color': 'red', 'hex': Colors.blue(), 'ticked': False, 'blocked': False})
+
+
+
+        # for n in range(0, 11):
+        #     if random.randint(0, 1) == 0:
+        #         self.line5.append({'num': n+2, 'color': 'red', 'hex': Colors.blue(), 'ticked': True, 'blocked': False})
+        #     else:
+        #         self.line5.append({'num': n+2, 'color': 'red', 'hex': Colors.blue(), 'ticked': False, 'blocked': True})
+
+        # for x in self.line1:
+        #     if random.randint(0, 1) == 1:
+        #         x['ticked'] = True
+        #     elif random.randint(0, 1) == 1:
+        #         x['blocked'] = True
+
+        # for x in self.line3:
+        #     if random.randint(0, 1) == 1:
+        #         x['ticked'] = True
+        #     elif random.randint(0, 1) == 1:
+        #         x['blocked'] = True
 
         return [self.line1, self.line2, self.line3, self.line4]
