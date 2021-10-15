@@ -1,3 +1,7 @@
+import pygame
+pygame.font.init()
+
+
 class Settings:
     def __init__(self):
         self.width = 900
@@ -5,24 +9,28 @@ class Settings:
 
         while True:
             in1 = input("Random Colors? (True/False)\n-->   ")
-            try: bool(in1); break
-            except: pass
-        self.ranCol = bool(in1)
+            # in1 = "n"
+            if in1 == "True" or in1 == "y" or in1 == "False" or in1 == "n":
+                if in1 == "True" or in1 == "y":
+                    in1 = True; break
+                else:
+                    in1 = False; break
+        self.ranCol = in1
 
         while True:
             in2 = input("Random Numbers? (True/False)\n-->   ")
-            try: bool(in2); break
-            except: pass
-        self.ranNum = bool(in2)
+            # in2 = "n"
+            if in2 == "True" or in2 == "y" or in2 == "False" or in2 == "n":
+                if in2 == "True" or in2 == "y":
+                    in2 = True; break
+                else:
+                    in2 = False; break
+        self.ranNum = in2
 
         self.fps = 60
         self.ai = False
         self.trainai = False
-    
-    def width(self): return self.width
-    def height(self): return self.height
-    def ranCol(self): return self.ranCol
-    def ranNum(self): return self.ranNum
-    def fps(self): return self.fps
-    def ai(self): return self.ai
-    def trainai(self): return self.trainai
+        self.centeroffset = 4
+        self.alpha = 255//8
+        self.font = pygame.font.SysFont('Comic Sans MS', 30)
+
