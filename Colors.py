@@ -5,3 +5,5 @@ class Colors:
     def blue(): return (84, 152, 235)
     def dicebutton(): return (48, 219, 216)
     def dicebuttonpressed(): return (14, 87, 85)
+    def passbutton(): return (52, 110, 235)
+    def passbuttonpressed(): return (41, 74, 143)
