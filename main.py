@@ -26,6 +26,7 @@ class GameLogic:
                 if num['hex'] == Colors.green() or num['hex'] == Colors.blue():
                     if p['number'] == 14-num['num']:
                         if p['col'] == num['hex'] or p['col'] == None:
+                            if p['col'] == None and not self.diceing.whiteblocked
                             return True
                 else:
                     if p['number'] == num['num']:
@@ -350,5 +351,3 @@ while True:
     w.drawPassButton(x, y, r)
     w.drawDice()
     w.update()
-
-[[[{'num': 2, 'color': 'red', 'hex': (84, 152, 235), 'ticked': False, 'blocked': False}, {'num': 3, 'color': 'red', 'hex': (84, 152, 235), 'ticked': False, 'blocked': False}, {'num': 4, 'color': 'red', 'hex': (84, 152, 235), 'ticked': False, 'blocked': False}, {'num': 5, 'color': 'red', 'hex': (84, 152, 235), 'ticked': False, 'blocked': False}, {'num': 6, 'color': 'red', 'hex': (84, 152, 235), 'ticked': False, 'blocked': False}, {'num': 7, 'color': 'red', 'hex': (84, 152, 235), 'ticked': True, 'blocked': False}, {'num': 8, 'color': 'red', 'hex': (84, 152, 235), 'ticked': False, 'blocked': False}, {'num': 9, 'color': 'red', 'hex': (84, 152, 235), 'ticked': False, 'blocked': False}, {'num': 10, 'color': 'red', 'hex': (84, 152, 235), 'ticked': False, 'blocked': False}, {'num': 11, 'color': 'red', 'hex': (84, 152, 235), 'ticked': False, 'blocked': False}, {'num': 12, 'color': 'red', 'hex': (84, 152, 235), 'ticked': False, 'blocked': False}], {'num': 7, 'color': 'red', 'hex': (84, 152, 235), 'ticked': True, 'blocked': False}]]

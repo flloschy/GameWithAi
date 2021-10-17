@@ -8,6 +8,7 @@ class Diceing:
         self.blue = randint(1, 6)
         self.white1 = randint(1, 6)
         self.white2 = randint(1, 6)
+        self.whiteblocked = False
     
     def redice(self):
         self.red = randint(1, 6)
