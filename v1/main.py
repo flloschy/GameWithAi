@@ -26,12 +26,13 @@ class GameLogic:
                 if num['hex'] == Colors.green() or num['hex'] == Colors.blue():
                     if p['number'] == 14-num['num']:
                         if p['col'] == num['hex'] or p['col'] == None:
-                            if p['col'] == None and not self.diceing.whiteblocked
-                            return True
+                            if not num['blocked']:
+                                return True
                 else:
                     if p['number'] == num['num']:
                         if p['col'] == num['hex'] or p['col'] == None:
-                            return True
+                            if not num['blocked']:
+                                return True
 
 
         return False
@@ -90,7 +91,7 @@ class Window:
         time.sleep(1/self.logic.settings.fps)
         self.WIN.fill((50,50,50))
 
-    def drawBoard(self, mX, mY, rmb):
+    def drawBoard(self, mX, mY, lmb):
         x = 5
         y = 5
         c = 0
@@ -102,7 +103,7 @@ class Window:
                 for num in line:
                     if x in range(mX, mX+50):
                         if y in range(mY, mY+50):
-                            if rmb:
+                            if lmb:
                                 if self.logic.canCheck(num):
                                     num['ticked'] = True
                             s = pygame.Surface((60,60))
@@ -128,7 +129,7 @@ class Window:
                 for num in line:
                     if x in range(mX, mX+50):
                         if y in range(mY, mY+50):
-                            if rmb:
+                            if lmb:
                                 if self.logic.canCheck(num):
                                     num['ticked'] = True
                             s = pygame.Surface((60,60))
@@ -155,14 +156,14 @@ class Window:
 
         self.logic.fixBoard()
 
-    def drawDiceButton(self, mX, mY, rmb):
+    def drawDiceButton(self, mX, mY, lmb):
         x, y = 680, 5
         buttonx, buttony = 110, 50
         hoverx, hovery = 120, 60
         if not self.logic.dice:
             if mX in range(x, x+buttonx):
                 if mY in range(y, y+buttony):
-                    if rmb:
+                    if lmb:
                         pygame.draw.rect(
                             self.WIN,
                             Colors.dicebuttonpressed(),
@@ -213,7 +214,7 @@ class Window:
             self.WIN.blit(text, (text_x, text_y))
             text_y += 25
 
-    def drawPassButton(self, mX, mY, rmb):
+    def drawPassButton(self, mX, mY, lmb):
         x, y = 810, 5
         buttonx, buttony = 50, 180+50
         hoverx, hovery = 60, 190+50
@@ -224,7 +225,7 @@ class Window:
         ) 
         if mX in range(x, x+buttonx):
             if mY in range(y, y+buttony):
-                if rmb:
+                if lmb:
                     s = pygame.Surface((hoverx, hovery))
                     s.set_alpha(self.logic.settings.alpha)
                     s.fill(Colors.passbuttonpressed())
@@ -346,8 +347,8 @@ while True:
             sys.exit(1)
     x, y = pygame.mouse.get_pos()
     l, m, r = pygame.mouse.get_pressed()
-    w.drawBoard(x-50, y-50, r)
-    w.drawDiceButton(x, y, r)
-    w.drawPassButton(x, y, r)
+    w.drawBoard(x-50, y-50, l)
+    w.drawDiceButton(x, y, l)
+    w.drawPassButton(x, y, l)
     w.drawDice()
     w.update()

@@ -33,9 +33,7 @@ class Board:
                                     self.line1.append({'num': num, 'color': 'red', 'hex': Col['hex'], 'ticked': False, 'blocked': False})
                                     break
                                 else:
-                                    
                                     continue
-                                
                             break
                         else:
                             self.line1.append({'num': num, 'color': 'red', 'hex': Colors.red(), 'ticked': False, 'blocked': False})
@@ -49,9 +47,7 @@ class Board:
                             self.line1.append({'num': n+2, 'color': 'red', 'hex': Col['hex'], 'ticked': False, 'blocked': False})
                             break
                         else:
-                            
                             continue
-                        
                 else:
                     self.line1.append({'num': n+2, 'color': 'red', 'hex': Colors.red(), 'ticked': False, 'blocked': False})
 
@@ -76,9 +72,7 @@ class Board:
                                     self.line2.append({'num': num, 'color': 'red', 'hex': Col['hex'], 'ticked': False, 'blocked': False})
                                     break
                                 else:
-                                    
                                     continue
-                                
                             break
                         else:
                             self.line2.append({'num': num, 'color': 'red', 'hex': Colors.yellow(), 'ticked': False, 'blocked': False})
@@ -92,9 +86,7 @@ class Board:
                             self.line2.append({'num': n+2, 'color': 'red', 'hex': Col['hex'], 'ticked': False, 'blocked': False})
                             break
                         else:
-                            
                             continue
-                        
                 else:
                     self.line2.append({'num': n+2, 'color': 'red', 'hex': Colors.yellow(), 'ticked': False, 'blocked': False})
 
@@ -119,9 +111,7 @@ class Board:
                                     self.line3.append({'num': num, 'color': 'red', 'hex': Col['hex'], 'ticked': False, 'blocked': False})
                                     break
                                 else:
-                                    
                                     continue
-                                
                             break
                         else:
                             self.line3.append({'num': num, 'color': 'red', 'hex': Colors.green(), 'ticked': False, 'blocked': False})
@@ -135,9 +125,7 @@ class Board:
                             self.line3.append({'num': n+2, 'color': 'red', 'hex': Col['hex'], 'ticked': False, 'blocked': False})
                             break
                         else:
-                            
                             continue
-                        
                 else:
                     self.line3.append({'num': n+2, 'color': 'red', 'hex': Colors.green(), 'ticked': False, 'blocked': False})
 
@@ -162,9 +150,7 @@ class Board:
                                     self.line4.append({'num': num, 'color': 'red', 'hex': Col['hex'], 'ticked': False, 'blocked': False})
                                     break
                                 else:
-                                    
                                     continue
-                                
                             break
                         else:
                             self.line4.append({'num': num, 'color': 'red', 'hex': Colors.blue(), 'ticked': False, 'blocked': False})
@@ -178,9 +164,7 @@ class Board:
                             self.line4.append({'num': n+2, 'color': 'red', 'hex': Col['hex'], 'ticked': False, 'blocked': False})
                             break
                         else:
-                            
                             continue
-                        
                 else:
                     self.line4.append({'num': n+2, 'color': 'red', 'hex': Colors.blue(), 'ticked': False, 'blocked': False})
 
