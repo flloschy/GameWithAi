@@ -1,7 +1,7 @@
+import os
+os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 import pygame, sys, time
-
 from Manager import *
-
 
 class Data:
     def __init__(self):
@@ -16,9 +16,12 @@ class mainGame:
         self.data = Data()
         self.WIN = pygame.display.set_mode((self.data.settings.width, self.data.settings.height))
         self.cursor = pygame.Rect(0, 0, 1, 1)
-        self.l = False
-        self.m = False
-        self.r = False
+        self.tickl = False
+        self.tickm = False
+        self.tickr = False
+        self.reall = False
+        self.realm = False
+        self.realr = False
         pygame.display.set_caption('UNO!')
         pygame.display.set_icon(self.data.textures.wild)
 
@@ -66,6 +69,7 @@ class mainGame:
                             continue
                 if not card['color'].__contains__('wild'):
                     exec(f"self.WIN.blit(self.data.textures.{card['color']}{card['num']}, ({x}, {y}))")
+
                 else:
                     exec(f"self.WIN.blit(self.data.textures.{card['color']}, ({x}, {y}))")
                 x += cardwidth
@@ -74,10 +78,12 @@ class mainGame:
                 for card in drawlater:
                     if not card['card']['color'].__contains__('wild'):
                         exec(f"self.WIN.blit(self.data.textures.{card['card']['color']}{card['card']['num']}, ({card['x']+((self.cursor.x-card['x'])//2)-20}, {card['y']-10}))")
-                        if self.l:
+                        if self.tickl:
                             if self.isVallid(card['card']):
                                 self.data.cards.lastplayedcards.append(card['card'])
                                 self.data.cards.removeCard(card['card'])
+                                if card['card']['num'] == 'card':
+                                    self.data.cards.giveCards(2, ai=True)
                                 break
                     else:
                         exec(f"self.WIN.blit(self.data.textures.{card['card']['color']}, ({card['x']+((self.cursor.x-card['x'])//2)-20}, {card['y']-10}))")
@@ -89,28 +95,35 @@ class mainGame:
                         pygame.draw.rect(self.WIN, (0, 255, 0), g)
                         pygame.draw.rect(self.WIN, (0, 0, 255), b)
                         pygame.draw.rect(self.WIN, (250, 160, 40), y)
-                        if self.l:
+                        if self.tickl:
                             if self.cursor.colliderect(r):
                                 card['card']['red'] = True
                                 self.data.cards.lastplayedcards.append(card['card'])
                                 self.data.cards.removeCard(card['card'])
+                                if card['card']['color'] == 'wild4':
+                                    self.data.cards.giveCards(4, ai=True)
                                 break
                             elif self.cursor.colliderect(g):
                                 card['card']['green'] = True
                                 self.data.cards.lastplayedcards.append(card['card'])
                                 self.data.cards.removeCard(card['card'])
+                                if card['card']['color'] == 'wild4':
+                                    self.data.cards.giveCards(4, ai=True)
                                 break
                             elif self.cursor.colliderect(b):
                                 card['card']['blue'] = True
                                 self.data.cards.lastplayedcards.append(card['card'])
                                 self.data.cards.removeCard(card['card'])
+                                if card['card']['color'] == 'wild4':
+                                    self.data.cards.giveCards(4, ai=True)
                                 break
                             elif self.cursor.colliderect(y):
                                 card['card']['yellow'] = True
                                 self.data.cards.lastplayedcards.append(card['card'])
                                 self.data.cards.removeCard(card['card'])
+                                if card['card']['color'] == 'wild4':
+                                    self.data.cards.giveCards(4, ai=True)
                                 break
-
 
         def stack():
             last = self.data.cards.lastplayedcards
@@ -118,6 +131,8 @@ class mainGame:
             y = self.data.settings.width//2 + self.data.settings.width//4 - 50
             if len(last) == 0:
                 self.WIN.blit(self.data.textures.white, (x, y))
+            elif len(last) > 25:
+                self.data.cards.lastplayedcards = [self.data.cards.lastplayedcards[-1]]
             else:
                 maxindex = len(last)-1
                 for index, c in enumerate(last):
@@ -134,177 +149,65 @@ class mainGame:
                                 pygame.draw.rect(self.WIN, (250, 160, 40), pygame.Rect(x-20, y, 10, 101))
                             elif c['green']:
                                 pygame.draw.rect(self.WIN, (0, 255, 0), pygame.Rect(x-20, y, 10, 101))
-                    y -= 5
+                    y -= 10
 
-
-
+        def aihand():
+            cardwidth = 30
+            allCards = self.data.cards.aiCards
+            x = (self.data.settings.width//2) - (len(allCards)*cardwidth//2) - 2
+            y = 120
+            for card in allCards:
+                self.WIN.blit(self.data.textures.black, (x, y))
+                x += cardwidth
 
         hand()
+        aihand()
         stack()
 
-        # def test(self):
-        #     x = 40
-        #     y = 80
-        #     for card in self.data.cards.userCards:
-        #         if x+200 >= self.data.settings.width:
-        #             y += 80
-        #             x = 40
-        #         exec(f"self.WIN.blit(self.data.textures.{card['color']}{card['num']}, ({x}, {y}))")
-        #         x += 40
-
     def pickupButton(self):
-        buttonWidth = len(self.data.cards.userCards) *55 + 60
-        buttonHeight = 30
-        x = (self.data.settings.width//2) -(buttonWidth//2) - 2
+        buttonWidth = 50
+        buttonHeight = 50
+        x = (self.data.settings.width//2) -(buttonWidth//2) + 60
         y = self.data.settings.height -120 -buttonHeight*2
-
-        pygame.draw.rect(self.WIN, (50, 50, 100), pygame.Rect(x, y, buttonWidth, buttonHeight))
-        if self.l:
-            if self.cursor.colliderect(pygame.Rect(x, y, buttonWidth, buttonHeight)):
-                self.data.cards.giveCards()
+        self.WIN.blit(self.data.textures.pick, (x, y))
+        if self.cursor.colliderect(pygame.Rect(x, y, buttonWidth, buttonHeight)):
+            if self.reall:
+                self.WIN.blit(self.data.textures.pickPressed, (x, y))
+                if self.tickl:
+                    self.data.cards.giveCards()
 
     def unoButton(self):
-        buttonWidth = 60
-        buttonHeight = 10
-        x = (self.data.settings.width//2) -(buttonWidth//2) - 2
-        y = self.data.settings.height -120 -buttonHeight*2 - 50
-        pygame.draw.rect(self.WIN, (100, 50, 50), pygame.Rect(x, y, buttonWidth, buttonHeight))
-        if self.l:
-            if self.cursor.colliderect(pygame.Rect(x, y, buttonWidth, buttonHeight)):
-                if len(self.data.cards.userCards) == 1:
-                    print("UNO!")
-                else:
-                    print("Noooo!")
+        buttonWidth = 50
+        buttonHeight = 50
+        x = (self.data.settings.width//2) -(buttonWidth//2) - 60
+        y = self.data.settings.height -120 -buttonHeight*2
+        self.WIN.blit(self.data.textures.uno, (x, y))
+        if self.cursor.colliderect(pygame.Rect(x, y, buttonWidth, buttonHeight)):
+            if self.reall:
+                self.WIN.blit(self.data.textures.unoPressed, (x, y))
 
 
 game = mainGame()
 game.data.cards.giveCards(am=8)
-
+game.data.cards.giveCards(am=8, ai=True)
 ticks = 0
+last = False
 while True:
     ticks += 1
     for event in pygame.event.get():
         if event.type == pygame.QUIT: 
             sys.exit(1)
     x, y = pygame.mouse.get_pos()
-    if ticks % 100 == 0:
-        game.l, game.m, game.r = pygame.mouse.get_pressed()
+    if last != any(pygame.mouse.get_pressed()):
+        game.tickl, game.tickm, game.tickr = pygame.mouse.get_pressed()
+        last = any((game.tickl, game.tickm, game.tickr))
+    game.reall, game.realm, game.realr = pygame.mouse.get_pressed()
     game.cursor.x = x
     game.cursor.y = y
 
     game.drawCards()
     game.pickupButton()
     game.unoButton()
-    game.l, game.m, game.r = False, False, False
+    game.tickl, game.tickm, game.tickr = False, False, False
     game.update()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
