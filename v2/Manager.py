@@ -71,6 +71,12 @@ class Textures:
         self.wild = pygame.image.load("./v2/Textures/More/Wild.png")
         self.wild4 = pygame.image.load("./v2/Textures/More/Wild+4.png")
         self.white = pygame.image.load("./v2/Textures/More/White.png")
+        self.black = pygame.image.load("./v2/Textures/More/CardBackside.png")
+
+        self.uno = pygame.image.load("./v2/Textures/Buttons/UnoButton.png")
+        self.unoPressed = pygame.image.load("./v2/Textures/Buttons/UnoButtonPressed.png")
+        self.pick = pygame.image.load("./v2/Textures/Buttons/PickUp.png")
+        self.pickPressed = pygame.image.load("./v2/Textures/Buttons/PickUpPressed.png")
 
 class Cards:
     def __init__(self):
@@ -79,17 +85,25 @@ class Cards:
         self.lastplayedcards = []
 
     def giveCards(self, am:int=1, ai=False):
-        colors = ['blue', 'red', 'yellow', 'green', 'wild', 'wild4']
-        num = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'blocked', 'reverse', 'card']
+        colors = ['blue', 'red', 'yellow', 'green',
+                    'blue', 'red', 'yellow', 'green',
+                    'blue', 'red', 'yellow', 'green',
+                    'blue', 'red', 'yellow', 'green',
+                    'wild', 'wild4']
+        num = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+                    '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+                    '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+                    '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+                    'blocked', 'card'] #'reverse'
         for _ in range(0, am):
             card = {'color': random.choice(colors), 'num': random.choice(num), 'blue': False, 'green': False, 'red': False, 'yellow': False}
+            print(card['num'])
             if ai:
                 self.aiCards.append(card)
             else:
                 self.userCards.append(card)
 
     def removeCard(self, card, ai=False):
-        print(self.lastplayedcards)
         try:
             if ai:
                 self.aiCards.remove(card)
@@ -106,65 +120,6 @@ class Settings:
 class Counts:
     def __init__(self):
         self.playedcards = 0
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
