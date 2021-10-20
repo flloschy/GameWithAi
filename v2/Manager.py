@@ -1,6 +1,7 @@
-from typing import Text
 import pygame
 import random
+import ast
+import collections
 
 
 class Colors:
@@ -94,10 +95,9 @@ class Cards:
                     '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
                     '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
                     '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-                    'blocked', 'card'] #'reverse'
+                    'blocked', 'card', 'card'] #'reverse'
         for _ in range(0, am):
             card = {'color': random.choice(colors), 'num': random.choice(num), 'blue': False, 'green': False, 'red': False, 'yellow': False}
-            print(card['num'])
             if ai:
                 self.aiCards.append(card)
             else:
@@ -111,16 +111,17 @@ class Cards:
                 self.userCards.remove(card)
         except: pass
 
+    def get(self):
+        return [ast.literal_eval(f"{self.aiCards}"), ast.literal_eval(f"{self.lastplayedcards}")]
+
 class Settings:
     def __init__(self):
-        self.fps = 30
+        self.fps = 20
         self.height = 1000
         self.width = 1000
 
 class Counts:
     def __init__(self):
         self.playedcards = 0
-
-
 
 
