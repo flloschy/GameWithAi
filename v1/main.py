@@ -6,7 +6,7 @@ pygame.init()
 col("Loaded Modules...", "yellow")
 
 class GameLogic:
-    def __init__(self):
+    def Nichtinit(self):
         col("Loading Settings...", "yellow")
         self.settings = Settings.Settings()
         col("Creating Board...", "yellow")
