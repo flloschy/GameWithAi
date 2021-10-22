@@ -3,6 +3,7 @@ os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 import pygame, time
 pygame.init()
 from Manager import *
+from termcolor import cprint as col
 
 class Data:
     def __init__(self):
@@ -10,8 +11,8 @@ class Data:
         self.textures = Textures()
         self.colors = Colors()
         self.settings = Settings()
+        self.font = pygame.font.SysFont("Comic Sans MS", 30)
         self.counts = Counts()
-        self.font = pygame.font.SysFont("Arial", 20)
 
 class mainGame:
     def __init__(self):
@@ -27,6 +28,7 @@ class mainGame:
         self.move = 'player'
         self.lastmove = None
         self.tick = 0
+        self.unoPressed = False
         pygame.display.set_caption('UNO!')
         pygame.display.set_icon(self.data.textures.wild)
 
@@ -34,7 +36,30 @@ class mainGame:
         pygame.display.update()
         self.WIN.fill((100, 200, 40))
         if len(self.data.cards.userCards) == 0:
-            time.sleep(3)
+            if self.unoPressed:
+                t1 = f" You Picked up \t{self.data.counts.userPickedup}\t Cards"
+                t2 = f" Ai Picked up \t{self.data.counts.aiPickedup}\t Cards"
+                if len(t1) > len(t2):   l = "- "*((len(t1) - 11)//2)
+                else:                          l = "- "*((len(t2) - 11)//2)
+                col(f"{l} YOU WON {l}", "yellow")
+                col(f" Cards Played: \t{self.data.counts.playedcards}", "cyan")
+                col(t1, "cyan")
+                col(t2, "cyan")
+                col(f"{l} YOU WON {l}", "yellow")
+                exit()
+            else:
+                self.data.cards.giveCards(2)
+        
+        if len(self.data.cards.aiCards) == 0:
+            t1 = f" You Picked up \t{self.data.counts.userPickedup}\t Cards"
+            t2 = f" Ai Picked up \t{self.data.counts.aiPickedup}\t Cards"
+            if len(t1) > len(t2):   l = "- "*((len(t1) - 10)//2)
+            else:                          l = "- "*((len(t2) - 10)//2)
+            col(f"{l} AI WON {l}", "yellow")
+            col(f" Cards Played: \t{self.data.counts.playedcards}", "cyan")
+            col(t1, "cyan")
+            col(t2, "cyan")
+            col(f"{l} AI WON {l}", "yellow")
             exit()
 
     def isVallid(self, card):
@@ -179,7 +204,6 @@ class mainGame:
                     self.lastmove = str(self.move)
                 self.move = 'remove stack'
                 if self.tick % self.data.settings.fps//4 == 0:
-                    print(self.tick)
                     self.data.cards.lastplayedcards.remove(self.data.cards.lastplayedcards[0])
                     if len(self.data.cards.lastplayedcards) == 2:
                         self.move = str(self.lastmove)
@@ -234,7 +258,7 @@ class mainGame:
 
         hand()
         aihand()
-        openaihand()
+        # openaihand()
         stack()
 
     def pickupButton(self):
@@ -249,6 +273,7 @@ class mainGame:
                 self.WIN.blit(self.data.textures.pickPressed, (x, y))
                 if self.tickl:
                     self.data.cards.giveCards()
+                    self.data.counts.userPickedup += 1
                     self.move = 'ai'
 
     def unoButton(self):
@@ -257,10 +282,32 @@ class mainGame:
         x = (self.data.settings.width//2) -(buttonWidth//2) - 60
         y = self.data.settings.height -120 -buttonHeight*2
         self.WIN.blit(self.data.textures.uno, (x, y))
+        l = len(self.data.cards.userCards)
         if self.cursor.colliderect(pygame.Rect(x, y, buttonWidth, buttonHeight)):
-            if self.reall:
-                self.WIN.blit(self.data.textures.unoPressed, (x, y))
+            if self.move == 'player':
+                if self.tickl:
+                    if l == 1:
+                        self.WIN.blit(self.data.textures.unoPressed, (x, y))
+                        self.unoPressed = True
+                    else:
+                        self.data.cards.giveCards()
 
+
+        if not (l == 1 or l == 0):
+            self.unoPressed = False
+
+    def ShowTurn(self):
+        if self.move == 'player':
+            text = self.data.font.render('Your Turn', False, (255, 255, 255))
+        elif self.move == 'ai':
+            text = self.data.font.render("Ai's Turn", False, (255, 255, 255))
+        elif self.move == 'remove stack':
+            text = self.data.font.render("Clearing Stack", False, (255, 255, 255))
+        else:
+            text = self.data.font.render("???", False, (255, 255, 255))
+        x, y = self.data.settings.width//2 - text.get_width()//2, 10
+        text.get_width()
+        self.WIN.blit(text, (x, y))
 
     # Hardcodedai -> not learning
 
@@ -407,52 +454,62 @@ class mainGame:
                 return 'pickup'
             return bestMove(cards)
 
-        move = getMove()
-        if move == 'pickup':
-            self.data.cards.giveCards(ai=True)
-            self.move = 'player'
-        else:
-            self.data.cards.removeCard(move, ai=True)
-            self.data.cards.lastplayedcards.append(move)
-            self.data.counts.playedcards += 1
-            if move['color'] == 'wild4':
-                self.data.cards.giveCards(4)
-            elif move['num'] == 'card':
-                self.data.cards.giveCards(2)
-            if move['num'] == 'blocked':
-                self.move = 'ai'
-            else:
+        def play():
+            move = getMove()
+            if move == 'pickup':
+                self.data.cards.giveCards(ai=True)
+                self.data.counts.aiPickedup += 1
                 self.move = 'player'
+            else:
+                self.data.cards.removeCard(move, ai=True)
+                self.data.cards.lastplayedcards.append(move)
+                self.data.counts.playedcards += 1
+                if move['color'] == 'wild4':
+                    self.data.cards.giveCards(4)
+                elif move['num'] == 'card':
+                    self.data.cards.giveCards(2)
+                if move['num'] == 'blocked':
+                    self.move = 'ai'
+                else:
+                    self.move = 'player'
 
-game = mainGame()
-game.data.cards.giveCards(am=8)
-game.data.cards.giveCards(am=8, ai=True)
-game.tick = 0
-lastswitch = 0
-last = False
-clock = pygame.time.Clock()
-while True:
-    clock.tick(game.data.settings.fps)
-    game.tick += 1
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT: 
-            exit()
-        if event.type == pygame.VIDEORESIZE:
-            game.data.settings.height = event.h
-            game.data.settings.width = event.w
-    x, y = pygame.mouse.get_pos()
-    if last != any(pygame.mouse.get_pressed()):
-        game.tickl, game.tickm, game.tickr = pygame.mouse.get_pressed()
-        last = any((game.tickl, game.tickm, game.tickr))
-    game.reall, game.realm, game.realr = pygame.mouse.get_pressed()
-    game.cursor.x = x
-    game.cursor.y = y
+        play()
 
-    game.drawCards()
-    game.pickupButton()
-    game.unoButton()
-    if game.tick % game.data.settings.fps == 0:
-        game.ai()
-    game.tickl, game.tickm, game.tickr = False, False, False
-    game.update()
 
+
+def main():
+    game = mainGame()
+    game.data.cards.giveCards(am=8)
+    game.data.cards.giveCards(am=8, ai=True)
+    game.tick = 0
+    lastswitch = 0
+    last = False
+    clock = pygame.time.Clock()
+    while True:
+        clock.tick(game.data.settings.fps)
+        game.tick += 1
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT: 
+                exit()
+            if event.type == pygame.VIDEORESIZE:
+                game.data.settings.height = event.h
+                game.data.settings.width = event.w
+        x, y = pygame.mouse.get_pos()
+        if last != any(pygame.mouse.get_pressed()):
+            game.tickl, game.tickm, game.tickr = pygame.mouse.get_pressed()
+            last = any((game.tickl, game.tickm, game.tickr))
+        game.reall, game.realm, game.realr = pygame.mouse.get_pressed()
+        game.cursor.x = x
+        game.cursor.y = y
+
+        game.drawCards()
+        game.pickupButton()
+        game.unoButton()
+        if game.tick % game.data.settings.fps == 0:
+            game.ai()
+        game.tickl, game.tickm, game.tickr = False, False, False
+        game.ShowTurn()
+        game.update()
+
+if __name__ == '__main__':
+    main()

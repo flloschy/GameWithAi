@@ -1,7 +1,7 @@
 import pygame
 import random
 import ast
-import collections
+pygame.init()
 
 
 class Colors:
@@ -123,5 +123,5 @@ class Settings:
 class Counts:
     def __init__(self):
         self.playedcards = 0
-
-
+        self.userPickedup = 0
+        self.aiPickedup = 0
