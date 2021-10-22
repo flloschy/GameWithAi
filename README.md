@@ -14,5 +14,5 @@ Card             |  Desciption
 
 Button | Desciption
 :-:|:-
-![Pickup](https://raw.githubusercontent.com/flloschy/GameWithAi/master/v2/Textures/buttons/PickUp.png) | This Button gives you a new card on your hand i case you cant do anything
+![Pickup](https://raw.githubusercontent.com/flloschy/GameWithAi/master/v2/Textures/buttons/PickUp.png) | This Button gives you a new card on your hand in case you cant do anything
 ![Pickup](https://raw.githubusercontent.com/flloschy/GameWithAi/master/v2/Textures/buttons/UnoButton.png) | You need to Press this Button when you have only one card left, when not and you play the last card, your hand becomes 2 more cards
